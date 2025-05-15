@@ -1,0 +1,68 @@
+import java.util.Scanner;
+
+public class GaussJordanSolver {
+
+    // Método principal
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Solicita número de ecuaciones
+        System.out.print("Ingrese el número de ecuaciones: ");
+        int n = scanner.nextInt();
+
+        double[][] matriz = new double[n][n + 1];
+
+        // Entrada de la matriz aumentada
+        System.out.println("Ingrese los coeficientes de la matriz aumentada:");
+        for (int i = 0; i < n; i++) {
+            System.out.println("Ecuación " + (i + 1) + ":");
+            for (int j = 0; j <= n; j++) {
+                matriz[i][j] = scanner.nextDouble();
+            }
+        }
+
+        // Aplicar Gauss-Jordan
+        gaussJordan(matriz, n);
+
+        // Mostrar soluciones
+        System.out.println("\nSolución del sistema:");
+        for (int i = 0; i < n; i++) {
+            System.out.printf("x%d = %.4f\n", i + 1, matriz[i][n]);
+        }
+    }
+
+    // Método que aplica Gauss-Jordan
+    public static void gaussJordan(double[][] mat, int n) {
+        for (int i = 0; i < n; i++) {
+            // Hacer el pivote 1
+            double pivote = mat[i][i];
+            for (int j = 0; j <= n; j++) {
+                mat[i][j] = mat[i][j] / pivote;
+            }
+
+            // Hacer cero en otras filas
+            for (int k = 0; k < n; k++) {
+                if (k != i) {
+                    double factor = mat[k][i];
+                    for (int j = 0; j <= n; j++) {
+                        mat[k][j] = mat[k][j] - factor * mat[i][j];
+                    }
+                }
+            }
+
+            // Mostrar la matriz paso a paso
+            System.out.println("\nPaso " + (i + 1) + ":");
+            imprimirMatriz(mat);
+        }
+    }
+
+    // Imprime la matriz aumentada
+    public static void imprimirMatriz(double[][] matriz) {
+        for (double[] fila : matriz) {
+            for (double valor : fila) {
+                System.out.printf("%.4f\t", valor);
+            }
+            System.out.println();
+        }
+    }
+}
